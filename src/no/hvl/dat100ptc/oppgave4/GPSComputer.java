@@ -107,7 +107,7 @@ public class GPSComputer
     public double averageSpeed()
     {
         double average = 0;
-        
+
         for (int i = 0; i < gpspoints.length - 1; i++)
         {
             average += GPSUtils.speed(gpspoints[i], gpspoints[i+1]);
