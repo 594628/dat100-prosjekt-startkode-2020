@@ -7,147 +7,169 @@ import no.hvl.dat100ptc.oppgave2.GPSDataConverter;
 import no.hvl.dat100ptc.oppgave2.GPSDataFileReader;
 import no.hvl.dat100ptc.oppgave3.GPSUtils;
 
-public class GPSComputer {
-	
-	private GPSPoint[] gpspoints;
-	
-	public GPSComputer(String filename) {
+public class GPSComputer
+{
+    private GPSPoint[] gpspoints;
 
-		GPSData gpsdata = GPSDataFileReader.readGPSFile(filename);
-		gpspoints = gpsdata.getGPSPoints();
+    public GPSComputer(String filename)
+    {
+        GPSData gpsdata = GPSDataFileReader.readGPSFile(filename);
+        gpspoints = gpsdata.getGPSPoints();
+    }
 
-	}
+    public GPSComputer(GPSPoint[] gpspoints)
+    {
+        this.gpspoints = gpspoints;
+    }
 
-	public GPSComputer(GPSPoint[] gpspoints) {
-		this.gpspoints = gpspoints;
-	}
-	
-	public GPSPoint[] getGPSPoints() {
-		return this.gpspoints;
-	}
-	
-	// beregn total distances (i meter)
-	public double totalDistance() {
+    public GPSPoint[] getGPSPoints()
+    {
+        return this.gpspoints;
+    }
 
-		double distance = 0;
+    // beregn total distances (i meter)
+    public double totalDistance()
+    {
+        double distance = 0;
+        int i = 0;
 
-		// TODO - START
+        while (i < gpspoints.length-1)
+        {
+            distance += GPSUtils.distance(gpspoints[i], gpspoints[i+1]);
+            i++;
+        }
 
-		throw new UnsupportedOperationException(TODO.method());
+        return distance;
+    }
 
-		// TODO - SLUTT
+    // beregn totale høydemeter (i meter)
+    public double totalElevation()
+    {
+        double elevation = 0;
 
-	}
+        for (int i = 0; i < gpspoints.length; i++)
+        {
+            if (gpspoints[i].getElevation() > elevation)
+            {
+                elevation += gpspoints[i].getElevation() - elevation;
+            }
+        }
 
-	// beregn totale høydemeter (i meter)
-	public double totalElevation() {
+        return elevation;
+    }
 
-		double elevation = 0;
+    // beregn total tiden for hele turen (i sekunder)
+    public int totalTime()
+    {
+        int time = 0;
 
-		// TODO - START
+        for (int i = 0; i < gpspoints.length; i++)
+        {
+            time += gpspoints[i].getTime()*2;
+        }
+        time = time / 3600;
 
-		throw new UnsupportedOperationException(TODO.method());
+        return time;
+    }
 
-		// TODO - SLUTT
+    // beregn gjennomsnitshastighets mellom hver av gps punktene
 
-	}
+    public double[] speeds()
+    {
+        double[] s = new double[gpspoints.length - 1];
 
-	// beregn total tiden for hele turen (i sekunder)
-	public int totalTime() {
+        for (int i = 0; i < gpspoints.length-1; i++)
+        {
+            s[i] = GPSUtils.speed(gpspoints[i], gpspoints[i+1]);
+        }
 
-		throw new UnsupportedOperationException(TODO.method());
+        return s;
+    }
 
-	}
-		
-	// beregn gjennomsnitshastighets mellom hver av gps punktene
+    public double maxSpeed()
+    {
+        double maxspeed = 0;
 
-	public double[] speeds() {
-		
-		// TODO - START		// OPPGAVE - START
-		
-		throw new UnsupportedOperationException(TODO.method());
+        double[] da = speeds();
+        maxspeed = da[0];
 
-		// TODO - SLUTT
+        for (double d : da)
+        {
+            if (d > maxspeed)
+            {
+                maxspeed = d;
+            }
+        }
 
-	}
-	
-	public double maxSpeed() {
-		
-		double maxspeed = 0;
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - SLUTT
-		
-	}
+        return maxspeed;
+    }
 
-	public double averageSpeed() {
+    public double averageSpeed()
+    {
+        double average = 0;
+        
+        for (int i = 0; i < gpspoints.length - 1; i++)
+        {
+            average += GPSUtils.speed(gpspoints[i], gpspoints[i+1]);
+        }
+        average = average / (gpspoints.length - 1);
 
-		double average = 0;
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - SLUTT
-		
-	}
+        return average;
+    }
 
-	/*
-	 * bicycling, <10 mph, leisure, to work or for pleasure 4.0 bicycling,
-	 * general 8.0 bicycling, 10-11.9 mph, leisure, slow, light effort 6.0
-	 * bicycling, 12-13.9 mph, leisure, moderate effort 8.0 bicycling, 14-15.9
-	 * mph, racing or leisure, fast, vigorous effort 10.0 bicycling, 16-19 mph,
-	 * racing/not drafting or >19 mph drafting, very fast, racing general 12.0
-	 * bicycling, >20 mph, racing, not drafting 16.0
-	 */
+    /*
+     * bicycling, <10 mph, leisure, to work or for pleasure 4.0 bicycling,
+     * general 8.0 bicycling, 10-11.9 mph, leisure, slow, light effort 6.0
+     * bicycling, 12-13.9 mph, leisure, moderate effort 8.0 bicycling, 14-15.9
+     * mph, racing or leisure, fast, vigorous effort 10.0 bicycling, 16-19 mph,
+     * racing/not drafting or >19 mph drafting, very fast, racing general 12.0
+     * bicycling, >20 mph, racing, not drafting 16.0
+     */
 
-	// conversion factor m/s to miles per hour
-	public static double MS = 2.236936;
+    // conversion factor m/s to miles per hour
+    public static double MS = 2.236936;
 
-	// beregn kcal gitt weight og tid der kjøres med en gitt hastighet
-	public double kcal(double weight, int secs, double speed) {
+    // beregn kcal gitt weight og tid der kjøres med en gitt hastighet
+    public double kcal(double weight, int secs, double speed)
+    {
+        double kcal;
 
-		double kcal;
+        // MET: Metabolic equivalent of task angir (kcal x kg-1 x h-1)
+        double met = 0;
+        double speedmph = speed * MS;
 
-		// MET: Metabolic equivalent of task angir (kcal x kg-1 x h-1)
-		double met = 0;		
-		double speedmph = speed * MS;
+        // TODO - START
 
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
+        throw new UnsupportedOperationException(TODO.method());
 
-		// TODO - SLUTT
-		
-	}
+        // TODO - SLUTT
 
-	public double totalKcal(double weight) {
+    }
 
-		double totalkcal = 0;
+    public double totalKcal(double weight)
+    {
+        double totalkcal = 0;
 
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
+        // TODO - START
 
-		// TODO - SLUTT
-		
-	}
-	
-	private static double WEIGHT = 80.0;
-	
-	public void displayStatistics() {
+        throw new UnsupportedOperationException(TODO.method());
 
-		System.out.println("==============================================");
+        // TODO - SLUTT
 
-		// TODO - START
+    }
 
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - SLUTT
-		
-	}
+    private static double WEIGHT = 80.0;
+
+    public void displayStatistics()
+    {
+        System.out.println("==============================================");
+
+        // TODO - START
+
+        throw new UnsupportedOperationException(TODO.method());
+
+        // TODO - SLUTT
+
+    }
 
 }
