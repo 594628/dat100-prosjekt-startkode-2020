@@ -111,7 +111,7 @@ public class GPSUtils
         String timestr;
         String TIMESEP = ":";
 
-        timestr = String.format("%010d", secs);
+        timestr = String.format("%10dT", secs);
 
         return timestr;
     }
@@ -120,13 +120,8 @@ public class GPSUtils
 
     public static String formatDouble(double d)
     {
-        String str;
+        String str = String.format("%10.2f", d);
 
-        // TODO - START
-
-        throw new UnsupportedOperationException(TODO.method());
-
-        // TODO - SLUTT
-
+        return str;
     }
 }
