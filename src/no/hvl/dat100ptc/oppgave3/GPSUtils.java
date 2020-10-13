@@ -110,8 +110,12 @@ public class GPSUtils
     {
         String timestr;
         String TIMESEP = ":";
+        int HH = secs / 3600;
+        int ss = secs %3600;
+        int mm = ss / 60;
+        ss %= 60;
 
-        timestr = String.format("%10dT", secs);
+        timestr = String.format("  %02d%s%02d%s%02d", HH,TIMESEP, mm, TIMESEP, ss);
 
         return timestr;
     }
