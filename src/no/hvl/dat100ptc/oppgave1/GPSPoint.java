@@ -25,7 +25,7 @@ public class GPSPoint
 
     public void setTime(int time)
     {
-        time = this.time;
+        this.time = time;
     }
 
     public double getLatitude()
@@ -35,7 +35,7 @@ public class GPSPoint
 
     public void setLatitude(double latitude)
     {
-        latitude = this.latitude;
+        this.latitude = latitude;
     }
 
     public double getLongitude()
@@ -45,7 +45,7 @@ public class GPSPoint
 
     public void setLongitude(double longitude)
     {
-        longitude = this.longitude;
+        this.longitude = longitude;
     }
 
     public double getElevation()
@@ -55,7 +55,7 @@ public class GPSPoint
 
     public void setElevation(double elevation)
     {
-        elevation = this.elevation;
+        this.elevation = elevation;
     }
 
     public String toString()
